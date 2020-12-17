@@ -22,6 +22,18 @@ if ( !$connection ) {
             header( "location:index.php?id=allManager" );
         }
 
+    } elseif ( 'updateManager' == $action ) {
+        $id = $_REQUEST['id'] ?? '';
+        $fname = $_REQUEST['fname'] ?? '';
+        $lname = $_REQUEST['lname'] ?? '';
+        $email = $_REQUEST['email'] ?? '';
+        $phone = $_REQUEST['phone'] ?? '';
+
+        if ( $fname && $lname && $lname && $phone ) {
+            $query = "UPDATE managers SET fname='{$fname}', lname='{$lname}', email='$email', phone='$phone' WHERE id='{$id}'";
+            mysqli_query( $connection, $query );
+            header( "location:index.php?id=allManager" );
+        }
     } elseif ( 'addPharmacist' == $action ) {
         $fname = $_REQUEST['fname'] ?? '';
         $lname = $_REQUEST['lname'] ?? '';
@@ -32,6 +44,18 @@ if ( !$connection ) {
         if ( $fname && $lname && $lname && $phone && $password ) {
             $hashPassword = password_hash( $password, PASSWORD_BCRYPT );
             $query = "INSERT INTO pharmacists(fname,lname,email,phone,password) VALUES ('{$fname}','$lname','$email','$phone','$hashPassword')";
+            mysqli_query( $connection, $query );
+            header( "location:index.php?id=allPharmacist" );
+        }
+    } elseif ( 'updatePharmacist' == $action ) {
+        $id = $_REQUEST['id'] ?? '';
+        $fname = $_REQUEST['fname'] ?? '';
+        $lname = $_REQUEST['lname'] ?? '';
+        $email = $_REQUEST['email'] ?? '';
+        $phone = $_REQUEST['phone'] ?? '';
+
+        if ( $fname && $lname && $lname && $phone ) {
+            $query = "UPDATE pharmacists SET fname='{$fname}', lname='{$lname}', email='$email', phone='$phone' WHERE id='{$id}'";
             mysqli_query( $connection, $query );
             header( "location:index.php?id=allPharmacist" );
         }

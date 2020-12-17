@@ -55,7 +55,11 @@
                         echo "Pharmacists";
                     } elseif ( 'userProfile' == $id ) {
                         echo "Your Profile";
-                    } 
+                    } elseif ( 'editManager' == $action ) {
+                        echo "Edit Manager";
+                    } elseif ( 'editPharmacist' == $action ) {
+                        echo "Edit Pharmacist";
+                    }
                 ?>
 
             </span>
@@ -193,6 +197,8 @@
                                         <th scope="col">Phone Number</th>
                                         <?php if ( 'admin' == $sessionRole ) {?>
                                             <!-- Only For Admin -->
+                                            <th scope="col">Edit</th>
+                                            <th scope="col">Delete</th>
                                         <?php }?>
                                     </tr>
                                 </thead>
@@ -209,6 +215,8 @@
                                             <td><?php printf( "%s", $manager['email'] );?></td>
                                             <td><?php printf( "%s", $manager['phone'] );?></td>
                                             <?php if ( 'admin' == $sessionRole ) {?>
+                                                <td><?php printf( "<a href='index.php?action=editManager&id=%s'><i class='fas fa-edit'></i></a>", $manager['id'] )?></td>
+                                                <td><?php printf( "<a class='delete' href='index.php?action=deleteManager&id=%s'><i class='fas fa-trash'></i></a>", $manager['id'] )?></td>
                                             <?php }?>
                                         </tr>
                                     <?php }?>
@@ -266,7 +274,60 @@
                     </div>
                 <?php }?>
 
-                
+                <?php if ( 'editManager' == $action ) {
+                        $managerId = $_REQUEST['id'];
+                        $selectManagers = "SELECT * FROM managers WHERE id='{$managerId}'";
+                        $result = mysqli_query( $connection, $selectManagers );
+
+                    $manager = mysqli_fetch_assoc( $result );?>-->
+                    <div class="addManager">
+                        <div class="main__form">
+                            <div class="main__form--title text-center">Update Manager</div>
+                            <form action="add.php" method="POST">
+                                <div class="form-row">
+                                    <div class="col col-12">
+                                        <label class="input">
+                                            <i id="left" class="fas fa-user-circle"></i>
+                                            <input type="text" name="fname" placeholder="First name" value="<?php echo $manager['fname']; ?>" required>
+                                        </label>
+                                    </div>
+                                    <div class="col col-12">
+                                        <label class="input">
+                                            <i id="left" class="fas fa-user-circle"></i>
+                                            <input type="text" name="lname" placeholder="Last Name" value="<?php echo $manager['lname']; ?>" required>
+                                        </label>
+                                    </div>
+                                    <div class="col col-12">
+                                        <label class="input">
+                                            <i id="left" class="fas fa-envelope"></i>
+                                            <input type="email" name="email" placeholder="Email" value="<?php echo $manager['email']; ?>" required>
+                                        </label>
+                                    </div>
+                                    <div class="col col-12">
+                                        <label class="input">
+                                            <i id="left" class="fas fa-phone-alt"></i>
+                                            <input type="number" name="phone" placeholder="Phone" value="<?php echo $manager['phone']; ?>" required>
+                                        </label>
+                                    </div>
+                                    <input type="hidden" name="action" value="updateManager">
+                                    <input type="hidden" name="id" value="<?php echo $managerId; ?>">
+                                    <div class="col col-12">
+                                        <input type="submit" value="Update">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                <?php }?>
+
+                <?php if ( 'deleteManager' == $action ) {
+                        $managerId = $_REQUEST['id'];
+                        $deleteManager = "DELETE FROM managers WHERE id ='{$managerId}'";
+                        $result = mysqli_query( $connection, $deleteManager );
+                        header( "location:index.php?id=allManager" );
+                }?>
+            </div>
+
             <!-- ---------------------- Manager ------------------------ -->
 
             <!-- ---------------------- Pharmacist ------------------------ -->
@@ -282,6 +343,8 @@
                                         <th scope="col">Email</th>
                                         <th scope="col">Phone Number</th>
                                         <?php if ( 'admin' == $sessionRole || 'manager' == $sessionRole ) {?>
+                                            <th scope="col">Edit</th>
+                                            <th scope="col">Delete</th>
                                         <?php }?>
                                     </tr>
                                 </thead>
@@ -298,6 +361,8 @@
                                             <td><?php printf( "%s", $pharmacist['email'] );?></td>
                                             <td><?php printf( "%s", $pharmacist['phone'] );?></td>
                                             <?php if ( 'admin' == $sessionRole || 'manager' == $sessionRole ) {?>
+                                                <td><?php printf( "<a href='index.php?action=editPharmacist&id=%s'><i class='fas fa-edit'></i></a>", $pharmacist['id'] )?></td>
+                                                <td><?php printf( "<a class='delete' href='index.php?action=deletePharmacist&id=%s'><i class='fas fa-trash'></i></a>", $pharmacist['id'] )?></td>
                                             <?php }?>
                                         </tr>
                                     <?php }?>
@@ -355,6 +420,60 @@
 
                     </div>
                 <?php }?>
+
+                <?php if ( 'editPharmacist' == $action ) {
+                        $pharmacistID = $_REQUEST['id'];
+                        $selectPharmacist = "SELECT * FROM pharmacists WHERE id='{$pharmacistID}'";
+                        $result = mysqli_query( $connection, $selectPharmacist );
+
+                    $pharmacist = mysqli_fetch_assoc( $result );?>
+                    <div class="addManager">
+                        <div class="main__form">
+                            <div class="main__form--title text-center">Update Pharmacist</div>
+                            <form action="add.php" method="POST">
+                                <div class="form-row">
+                                    <div class="col col-12">
+                                        <label class="input">
+                                            <i id="left" class="fas fa-user-circle"></i>
+                                            <input type="text" name="fname" placeholder="First name" value="<?php echo $pharmacist['fname']; ?>" required>
+                                        </label>
+                                    </div>
+                                    <div class="col col-12">
+                                        <label class="input">
+                                            <i id="left" class="fas fa-user-circle"></i>
+                                            <input type="text" name="lname" placeholder="Last Name" value="<?php echo $pharmacist['lname']; ?>" required>
+                                        </label>
+                                    </div>
+                                    <div class="col col-12">
+                                        <label class="input">
+                                            <i id="left" class="fas fa-envelope"></i>
+                                            <input type="email" name="email" placeholder="Email" value="<?php echo $pharmacist['email']; ?>" required>
+                                        </label>
+                                    </div>
+                                    <div class="col col-12">
+                                        <label class="input">
+                                            <i id="left" class="fas fa-phone-alt"></i>
+                                            <input type="number" name="phone" placeholder="Phone" value="<?php echo $pharmacist['phone']; ?>" required>
+                                        </label>
+                                    </div>
+                                    <input type="hidden" name="action" value="updatePharmacist">
+                                    <input type="hidden" name="id" value="<?php echo $pharmacistID; ?>">
+                                    <div class="col col-12">
+                                        <input type="submit" value="Update">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                <?php }?>
+
+                <?php if ( 'deletePharmacist' == $action ) {
+                        $pharmacistID = $_REQUEST['id'];
+                        $deletePharmacist = "DELETE FROM pharmacists WHERE id ='{$pharmacistID}'";
+                        $result = mysqli_query( $connection, $deletePharmacist );
+                        header( "location:index.php?id=allPharmacist" );
+                }?>
+            </div>
 
                 
             <!-- ---------------------- Pharmacist ------------------------ -->
