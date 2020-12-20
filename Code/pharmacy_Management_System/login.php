@@ -6,6 +6,7 @@
         header( "location:index.php" );
         die();
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -70,3 +71,6 @@
             </div>
         </div>
     </section>
+</body>
+
+</html>
